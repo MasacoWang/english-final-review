@@ -77,6 +77,9 @@
     body {
       margin: 0;
       background:
+        radial-gradient(circle at 92% 12%, var(--cp-warning), transparent 10rem),
+        radial-gradient(circle at 12% 26%, var(--cp-link), transparent 12rem),
+        radial-gradient(circle at 80% 82%, var(--cp-success), transparent 14rem),
         radial-gradient(circle at top left, var(--cp-accent-soft), transparent 36rem),
         linear-gradient(180deg, var(--cp-bg-elevated), var(--cp-bg));
       color: var(--cp-text);
@@ -120,6 +123,25 @@
     .hero-side,
     .panel {
       padding: 20px;
+    }
+
+    .hero-main {
+      position: relative;
+      overflow: hidden;
+      border-width: 2px;
+    }
+
+    .hero-main::after {
+      content: "ABC ✦ 123 ✦ Wow!";
+      position: absolute;
+      right: 18px;
+      bottom: 12px;
+      color: var(--cp-accent);
+      font-size: clamp(1.4rem, 3vw, 2.4rem);
+      font-weight: 950;
+      opacity: 0.16;
+      transform: rotate(-8deg);
+      pointer-events: none;
     }
 
     .eyebrow {
@@ -211,7 +233,9 @@
     }
 
     .stat {
-      background: var(--cp-surface-soft);
+      background:
+        linear-gradient(135deg, var(--cp-highlight), transparent),
+        var(--cp-surface-soft);
       border: 1px solid var(--cp-border);
       border-radius: 0.625rem;
       padding: 12px;
@@ -241,7 +265,9 @@
 
     .tab {
       border: 1px solid var(--cp-border);
-      background: var(--cp-surface);
+      background:
+        linear-gradient(135deg, var(--cp-accent-soft), transparent),
+        var(--cp-surface);
       color: var(--cp-text);
       border-radius: 0.625rem;
       padding: 10px 12px;
@@ -318,7 +344,9 @@
     .choice,
     .pattern-card,
     .sentence-card {
-      background: var(--cp-surface-soft);
+      background:
+        linear-gradient(135deg, var(--cp-sheen), transparent),
+        var(--cp-surface-soft);
       border: 1px solid var(--cp-border);
       border-radius: 0.625rem;
       padding: 12px;
@@ -352,9 +380,12 @@
       place-items: center;
       text-align: center;
       background:
+        radial-gradient(circle at 18% 18%, var(--cp-warning), transparent 5rem),
+        radial-gradient(circle at 82% 22%, var(--cp-link), transparent 5rem),
+        radial-gradient(circle at 80% 82%, var(--cp-success), transparent 5rem),
         linear-gradient(135deg, var(--cp-accent-soft), transparent),
         var(--cp-surface);
-      border: 1px solid var(--cp-border);
+      border: 2px solid var(--cp-border);
       border-radius: 16px;
       padding: 22px;
     }
@@ -421,6 +452,53 @@
     .choice {
       text-align: left;
       font-weight: 850;
+    }
+
+    .picture-choice {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      min-height: 72px;
+    }
+
+    .picture-choice .emoji {
+      font-size: 2.4rem;
+    }
+
+    .exam-visual {
+      display: grid;
+      place-items: center;
+      min-height: 150px;
+      margin: 14px 0;
+      border: 2px dashed var(--cp-border-strong);
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 22% 24%, var(--cp-warning), transparent 4.5rem),
+        radial-gradient(circle at 78% 26%, var(--cp-link), transparent 4.5rem),
+        linear-gradient(135deg, var(--cp-highlight), transparent),
+        var(--cp-surface-soft);
+      text-align: center;
+    }
+
+    .exam-visual .emoji {
+      display: block;
+      font-size: clamp(4rem, 12vw, 7rem);
+    }
+
+    .exam-visual .big-text {
+      display: block;
+      font-size: clamp(2rem, 8vw, 4.2rem);
+      font-weight: 950;
+      letter-spacing: 0.03em;
+    }
+
+    .exam-type {
+      color: var(--cp-accent);
+      font-weight: 950;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
     }
 
     .choice.correct {
@@ -641,7 +719,7 @@
       <div class="hero-main card">
         <div class="eyebrow">Final Exam Mission</div>
         <h1>英文期末考互動複習</h1>
-        <p class="muted">Unit 1-4：星期、科目、地點、動物。用遊戲把單字、phonics、句型練到會，不只是看過。</p>
+        <p class="muted">Unit 1-4：星期、科目、地點、動物。題型改成像一般考卷：看圖選字、句子填空、句子重組、phonics 找相同發音。</p>
         <div class="hero-actions">
           <button class="button primary" data-jump="exam">開始期末 Boss 測驗</button>
           <button class="button" data-jump="words">先背單字</button>
@@ -740,8 +818,8 @@
           </div>
         </article>
         <article class="panel card span-5">
-          <h2>看提示拼單字</h2>
-          <p class="muted" id="spellPrompt">看到中文和圖案後，輸入英文。</p>
+          <h2>看圖片拼單字</h2>
+          <p class="muted" id="spellPrompt">只看圖片，輸入正確英文單字。</p>
           <div class="input-row">
             <input id="spellInput" type="text" autocomplete="off" placeholder="輸入英文單字" />
             <button class="button primary" id="checkSpell">檢查</button>
@@ -786,9 +864,9 @@
     <section class="section" id="sentences">
       <div class="grid">
         <article class="panel card span-7">
-          <h2>句型拼圖</h2>
+          <h2>句型填空＋拼圖</h2>
           <div class="sentence-prompt">
-            <strong id="sentenceZh">今天星期幾？</strong>
+            <strong id="sentenceZh">Reorder the sentence.</strong>
             <p class="muted" id="sentenceHint">把下面的字排成正確英文句子。</p>
           </div>
           <div class="answer-bank" id="answerBank" aria-label="你的答案"></div>
@@ -818,7 +896,7 @@
             <div class="progress-fill" id="examFill"></div>
           </div>
           <div id="examArea" style="margin-top: 16px;">
-            <p class="muted">按「開始測驗」後會混合出題：單字中文選英文、英文選中文、phonics、句型。建議目標 85 分以上。</p>
+            <p class="muted">按「開始測驗」後會混合出題：看圖選單字、句子填空、句子重組、phonics 找單字／找相同發音。建議目標 85 分以上。</p>
             <button class="button primary" id="startExam" style="margin-top: 14px;">開始 20 題挑戰</button>
           </div>
         </article>
@@ -956,8 +1034,11 @@
     const allWords = () => units.flatMap((unit) => unit.words.map(([word, zh, emoji]) => ({ unit, word, zh, emoji })));
     const activeUnits = () => state.unit === "all" ? units : units.filter((unit) => unit.id === state.unit);
     const allPhonics = () => activeUnits().flatMap((unit) => unit.phonics.flatMap((group) => group.words.map((word) => ({ unit, pattern: group.pattern, word }))));
+    const allPhonicsEveryUnit = () => units.flatMap((unit) => unit.phonics.flatMap((group) => group.words.map((word) => ({ unit, pattern: group.pattern, word }))));
     const allSentences = () => activeUnits().flatMap((unit) => unit.sentences.map((sentence) => ({ unit, ...sentence })));
     const normalize = (value) => value.trim().toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, " ");
+    const escapeAttr = (value) => String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+    const escapeHtml = (value) => String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
     function saveProgress(type, correct) {
       const current = state.progress[type] || { correct: 0, total: 0 };
@@ -1079,7 +1160,7 @@
     function newSpell() {
       const deck = flatWords();
       state.spellItem = deck[Math.floor(Math.random() * deck.length)];
-      $("spellPrompt").textContent = `${state.spellItem.emoji} ${state.spellItem.zh}（${state.spellItem.unit.title}）`;
+      $("spellPrompt").textContent = `${state.spellItem.emoji}  Look at the picture and spell the word.`;
       $("spellInput").value = "";
       $("spellFeedback").textContent = "";
       $("spellFeedback").className = "feedback";
@@ -1146,8 +1227,8 @@
       const sentences = allSentences();
       state.sentenceItem = sentences[Math.floor(Math.random() * sentences.length)];
       state.sentenceChosen = [];
-      $("sentenceZh").textContent = state.sentenceItem.zh;
-      $("sentenceHint").textContent = `${state.sentenceItem.unit.title}：把單字點到上方，排成完整句子。`;
+      $("sentenceZh").textContent = "Reorder the words.";
+      $("sentenceHint").textContent = `${state.sentenceItem.unit.title}：像考卷句子重組，把單字點到上方排成完整句子。`;
       const tokens = state.sentenceItem.text.match(/[A-Za-z']+|[?.!,]/g);
       $("wordBank").innerHTML = shuffle(tokens).map((token, index) => `<button class="token sentence-token" data-token="${token}" data-index="${index}">${token}</button>`).join("");
       $("answerBank").innerHTML = "";
@@ -1206,40 +1287,97 @@
       $("sentenceList").innerHTML = allSentences().map((item) => `
         <div class="sentence-card">
           <strong>${item.text}</strong>
-          <p class="muted">${item.zh}</p>
+          <p class="muted">${item.unit.title} · test pattern</p>
         </div>
       `).join("");
     }
 
+    function makeSentenceFillQuestion(item) {
+      const words = allWords();
+      const match = words.find((word) => new RegExp(`\\b${word.word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(item.text));
+      if (!match) return null;
+      const blanked = item.text.replace(new RegExp(`\\b${match.word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i"), "_____");
+      const distractors = shuffle(words.filter((word) => word.unit.id === match.unit.id && word.word !== match.word)).slice(0, 3).map((word) => word.word);
+      return {
+        type: "Sentence Fill-in",
+        prompt: "Choose the best word for the blank.",
+        visual: `<span class="big-text">${escapeHtml(blanked)}</span>`,
+        answer: match.word,
+        choices: shuffle([match.word, ...distractors])
+      };
+    }
+
+    function makeSentenceOrderQuestion(item) {
+      const tokens = item.text.match(/[A-Za-z']+|[?.!,]/g);
+      const scrambled = shuffle(tokens).join(" ").replace(/\s+([?.!,])/g, "$1");
+      const otherSentences = shuffle(units.flatMap((unit) => unit.sentences.map((sentence) => sentence.text)).filter((text) => text !== item.text)).slice(0, 3);
+      return {
+        type: "Sentence Scramble",
+        prompt: "Choose the correct sentence.",
+        visual: `<span class="big-text">${escapeHtml(scrambled)}</span>`,
+        answer: item.text,
+        choices: shuffle([item.text, ...otherSentences])
+      };
+    }
+
     function buildExamQuestions() {
-      const wordQuestions = shuffle(allWords()).slice(0, 8).map((item) => ({
-        type: "word",
-        prompt: `${item.emoji}「${item.zh}」的英文是？`,
+      const words = allWords();
+      const wordQuestions = shuffle(words).slice(0, 6).map((item) => ({
+        type: "Picture Word",
+        prompt: "Look at the picture. Choose the word.",
+        visual: `<span class="emoji">${item.emoji}</span>`,
         answer: item.word,
-        choices: shuffle([item.word, ...shuffle(allWords().filter((word) => word.word !== item.word)).slice(0, 3).map((word) => word.word)])
+        choices: shuffle([item.word, ...shuffle(words.filter((word) => word.word !== item.word)).slice(0, 3).map((word) => word.word)])
       }));
-      const meaningQuestions = shuffle(allWords()).slice(0, 4).map((item) => ({
-        type: "word",
-        prompt: `${item.word} 是什麼意思？`,
-        answer: item.zh,
-        choices: shuffle([item.zh, ...shuffle(allWords().filter((word) => word.zh !== item.zh)).slice(0, 3).map((word) => word.zh)])
-      }));
-      const phonicsQuestions = shuffle(units.flatMap((unit) => unit.phonics.flatMap((group) => group.words.map((word) => ({ unit, pattern: group.pattern, word }))))).slice(0, 4).map((item) => {
+
+      const phonicsByPattern = units.flatMap((unit) => unit.phonics.map((group) => ({ unit, pattern: group.pattern, words: group.words })));
+      const phonicsWordQuestions = shuffle(phonicsByPattern).slice(0, 4).map((group) => {
+        const answer = shuffle(group.words)[0];
+        const distractors = shuffle(allPhonicsEveryUnit().filter((item) => item.pattern !== group.pattern)).slice(0, 3).map((item) => item.word);
+        return {
+          type: "Phonics Word",
+          prompt: `Which word has the ${group.pattern} sound?`,
+          visual: `<span class="big-text">${escapeHtml(group.pattern)}</span>`,
+          answer,
+          choices: shuffle([answer, ...distractors])
+        };
+      });
+
+      const sameSoundQuestions = shuffle(allPhonicsEveryUnit()).slice(0, 4).map((item) => {
+        const same = shuffle(allPhonicsEveryUnit().filter((other) => other.pattern === item.pattern && other.word !== item.word))[0];
+        const distractors = shuffle(allPhonicsEveryUnit().filter((other) => other.pattern !== item.pattern)).slice(0, 3).map((other) => other.word);
+        return {
+          type: "Same Sound",
+          prompt: `Which word has the same phonics sound as ${item.word}?`,
+          visual: `<span class="big-text">${escapeHtml(item.word)}</span>`,
+          answer: same.word,
+          choices: shuffle([same.word, ...distractors])
+        };
+      });
+
+      const patternQuestions = shuffle(allPhonicsEveryUnit()).slice(0, 2).map((item) => {
         const patterns = [...new Set(units.flatMap((unit) => unit.phonics.map((group) => group.pattern)))];
         return {
-          type: "phonics",
-          prompt: `${item.word} 的 phonics pattern 是？`,
+          type: "Phonics Pattern",
+          prompt: `What is the phonics pattern in ${item.word}?`,
+          visual: `<span class="big-text">${escapeHtml(item.word)}</span>`,
           answer: item.pattern,
           choices: shuffle([item.pattern, ...shuffle(patterns.filter((pattern) => pattern !== item.pattern)).slice(0, 3)])
         };
       });
-      const sentenceQuestions = shuffle(units.flatMap((unit) => unit.sentences.map((sentence) => ({ unit, ...sentence })))).slice(0, 4).map((item) => ({
-        type: "sentence",
-        prompt: `${item.zh} 的英文是？`,
-        answer: item.text,
-        choices: shuffle([item.text, ...shuffle(units.flatMap((unit) => unit.sentences.map((sentence) => sentence.text)).filter((text) => text !== item.text)).slice(0, 3)])
-      }));
-      return shuffle([...wordQuestions, ...meaningQuestions, ...phonicsQuestions, ...sentenceQuestions]).slice(0, 20);
+
+      const sentenceItems = shuffle(units.flatMap((unit) => unit.sentences.map((sentence) => ({ unit, ...sentence }))));
+      const fillQuestions = sentenceItems.map(makeSentenceFillQuestion).filter(Boolean).slice(0, 3);
+      const orderQuestions = sentenceItems.slice(3, 6).map(makeSentenceOrderQuestion);
+
+      return shuffle([
+        ...wordQuestions,
+        ...phonicsWordQuestions,
+        ...sameSoundQuestions,
+        ...patternQuestions,
+        ...fillQuestions,
+        ...orderQuestions
+      ]).slice(0, 20);
     }
 
     function startExam() {
@@ -1253,9 +1391,11 @@
       $("examProgress").textContent = `${exam.index + 1} / ${exam.questions.length}`;
       $("examFill").style.width = `${(exam.index / exam.questions.length) * 100}%`;
       $("examArea").innerHTML = `
+        <span class="exam-type">${question.type}</span>
         <h3>${question.prompt}</h3>
+        ${question.visual ? `<div class="exam-visual">${question.visual}</div>` : ""}
         <div class="choice-grid">
-          ${question.choices.map((choice) => `<button class="choice exam-choice" data-choice="${choice.replace(/"/g, "&quot;")}">${choice}</button>`).join("")}
+          ${question.choices.map((choice) => `<button class="choice exam-choice ${question.type === "Picture Word" ? "picture-choice" : ""}" data-choice="${escapeAttr(choice)}">${question.type === "Picture Word" ? `<span class="emoji">🔤</span><span>${escapeHtml(choice)}</span>` : escapeHtml(choice)}</button>`).join("")}
         </div>
         <div class="feedback" id="examFeedback"></div>
         <div class="controls" style="margin-top: 12px;">
