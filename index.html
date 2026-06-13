@@ -1,0 +1,1383 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>英文期末考互動複習</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, var(--cp-accent-soft), transparent 36rem),
+        linear-gradient(180deg, var(--cp-bg-elevated), var(--cp-bg));
+      color: var(--cp-text);
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 20px;
+      align-items: stretch;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      box-shadow: var(--cp-shadow);
+    }
+
+    .hero-main,
+    .hero-side,
+    .panel {
+      padding: 20px;
+    }
+
+    .eyebrow {
+      color: var(--cp-accent);
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 8px 0 8px;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height: 1.05;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.4rem;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .muted {
+      color: var(--cp-text-muted);
+    }
+
+    .hero-actions,
+    .controls,
+    .row,
+    .tabs,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hero-actions {
+      margin-top: 18px;
+    }
+
+    .button {
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface-soft);
+      color: var(--cp-text);
+      border-radius: 0.625rem;
+      padding: 10px 14px;
+      font-weight: 750;
+      transition: transform 120ms ease, background 120ms ease, border 120ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: var(--cp-border-strong);
+    }
+
+    .button.primary {
+      background: var(--cp-accent);
+      border-color: var(--cp-accent);
+      color: var(--cp-accent-fg);
+    }
+
+    .button.primary:hover {
+      background: var(--cp-accent-hover);
+    }
+
+    .button.ghost {
+      background: transparent;
+    }
+
+    .button.small {
+      padding: 7px 10px;
+      font-size: 0.9rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      padding: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.5rem;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin: 0 0 18px;
+      padding: 10px;
+      background: var(--cp-panel-strong);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      box-shadow: var(--cp-shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .tab {
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      border-radius: 0.625rem;
+      padding: 10px 12px;
+      font-weight: 800;
+    }
+
+    .tab.active {
+      background: var(--cp-accent);
+      border-color: var(--cp-accent);
+      color: var(--cp-accent-fg);
+    }
+
+    .unit-select {
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      border-radius: 0.625rem;
+      padding: 10px 12px;
+      min-width: 190px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .span-4 {
+      grid-column: span 4;
+    }
+
+    .span-5 {
+      grid-column: span 5;
+    }
+
+    .span-7 {
+      grid-column: span 7;
+    }
+
+    .span-8 {
+      grid-column: span 8;
+    }
+
+    .span-12 {
+      grid-column: span 12;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .word-list,
+    .choice-grid,
+    .pattern-grid,
+    .unit-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .unit-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .word-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .word-card,
+    .choice,
+    .pattern-card,
+    .sentence-card {
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      padding: 12px;
+    }
+
+    .word-card {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .emoji {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .word {
+      font-size: 1.1rem;
+      font-weight: 850;
+    }
+
+    .zh {
+      color: var(--cp-text-muted);
+      font-size: 0.92rem;
+    }
+
+    .flashcard {
+      min-height: 270px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background:
+        linear-gradient(135deg, var(--cp-accent-soft), transparent),
+        var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .flash-emoji {
+      font-size: clamp(4rem, 10vw, 7rem);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .flash-word {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .flash-hint {
+      margin-top: 8px;
+      color: var(--cp-text-muted);
+      font-weight: 700;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      border-radius: 0.625rem;
+      padding: 12px 13px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--cp-accent);
+      box-shadow: 0 0 0 3px var(--cp-accent-soft);
+    }
+
+    .feedback {
+      min-height: 30px;
+      margin-top: 10px;
+      font-weight: 850;
+    }
+
+    .feedback.good {
+      color: var(--cp-success);
+    }
+
+    .feedback.bad {
+      color: var(--cp-danger);
+    }
+
+    .choice-grid {
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 12px;
+    }
+
+    .choice {
+      text-align: left;
+      font-weight: 850;
+    }
+
+    .choice.correct {
+      border-color: var(--cp-success);
+      background: var(--cp-highlight);
+    }
+
+    .choice.wrong {
+      border-color: var(--cp-danger);
+    }
+
+    .sound-target {
+      font-size: clamp(2.4rem, 8vw, 5rem);
+      font-weight: 950;
+      text-align: center;
+      padding: 20px;
+      border: 1px dashed var(--cp-border-strong);
+      border-radius: 16px;
+      background: var(--cp-surface-soft);
+    }
+
+    .sound-target .blank {
+      color: var(--cp-accent);
+      letter-spacing: 0.04em;
+    }
+
+    .pattern-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .pattern-card {
+      text-align: center;
+      font-weight: 900;
+      font-size: 1.25rem;
+    }
+
+    .pattern-card.active {
+      background: var(--cp-accent);
+      color: var(--cp-accent-fg);
+      border-color: var(--cp-accent);
+    }
+
+    .sentence-prompt {
+      background: var(--cp-accent-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .word-bank,
+    .answer-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 54px;
+      padding: 10px;
+      border: 1px dashed var(--cp-border-strong);
+      border-radius: 0.625rem;
+      background: var(--cp-surface-soft);
+    }
+
+    .token {
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      border-radius: 0.625rem;
+      padding: 9px 11px;
+      font-weight: 850;
+    }
+
+    .answer-bank {
+      margin: 10px 0;
+      background: var(--cp-surface);
+    }
+
+    .exam-card {
+      min-height: 300px;
+    }
+
+    .progress-shell {
+      height: 12px;
+      overflow: hidden;
+      border-radius: 0.625rem;
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--cp-accent);
+      transition: width 220ms ease;
+    }
+
+    .mastery {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mastery-item {
+      display: grid;
+      grid-template-columns: 82px 1fr 45px;
+      gap: 10px;
+      align-items: center;
+      font-weight: 750;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface-soft);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--cp-text-muted);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .badge.strong {
+      background: var(--cp-accent);
+      color: var(--cp-accent-fg);
+      border-color: var(--cp-accent);
+    }
+
+    .mini-game {
+      display: grid;
+      gap: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .final-result {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .final-score {
+      display: block;
+      font-size: clamp(3rem, 12vw, 6rem);
+      font-weight: 950;
+      color: var(--cp-accent);
+      line-height: 1;
+      margin: 10px 0;
+    }
+
+    .print-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 20;
+    }
+
+    .confetti span {
+      position: absolute;
+      top: -30px;
+      animation: fall 1100ms ease-in forwards;
+      color: var(--cp-accent);
+      font-weight: 900;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .app {
+        padding: 14px;
+      }
+
+      .hero,
+      .nav {
+        grid-template-columns: 1fr;
+      }
+
+      .span-4,
+      .span-5,
+      .span-7,
+      .span-8,
+      .span-12 {
+        grid-column: span 12;
+      }
+
+      .unit-grid,
+      .word-list,
+      .choice-grid,
+      .pattern-grid,
+      .print-list,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti" id="confetti"></div>
+  <main class="app">
+    <section class="hero">
+      <div class="hero-main card">
+        <div class="eyebrow">Final Exam Mission</div>
+        <h1>英文期末考互動複習</h1>
+        <p class="muted">Unit 1-4：星期、科目、地點、動物。用遊戲把單字、phonics、句型練到會，不只是看過。</p>
+        <div class="hero-actions">
+          <button class="button primary" data-jump="exam">開始期末 Boss 測驗</button>
+          <button class="button" data-jump="words">先背單字</button>
+          <button class="button" data-jump="phonics">練 Phonics</button>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <span class="muted">單字</span>
+            <strong>31</strong>
+            <span class="muted">看圖、聽音、拼字</span>
+          </div>
+          <div class="stat">
+            <span class="muted">Phonics</span>
+            <strong>13</strong>
+            <span class="muted">長母音與母音組合</span>
+          </div>
+          <div class="stat">
+            <span class="muted">句型</span>
+            <strong>8</strong>
+            <span class="muted">問答與造句</span>
+          </div>
+        </div>
+      </div>
+      <aside class="hero-side card">
+        <h2>今日任務</h2>
+        <div class="mini-game">
+          <span class="badge strong" id="levelBadge">Level 1 Rookie Reader</span>
+          <p class="muted">建議順序：單字 10 分鐘 → phonics 10 分鐘 → 句型 10 分鐘 → Boss 測驗。</p>
+          <div>
+            <div class="row" style="justify-content: space-between;">
+              <strong>總熟練度</strong>
+              <strong id="overallPercent">0%</strong>
+            </div>
+            <div class="progress-shell" aria-label="總熟練度">
+              <div class="progress-fill" id="overallFill"></div>
+            </div>
+          </div>
+          <button class="button small" id="resetProgress">清除進度重新挑戰</button>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="nav">
+      <div class="tabs" role="tablist" aria-label="複習類型">
+        <button class="tab active" data-section="overview">總覽</button>
+        <button class="tab" data-section="words">單字遊戲</button>
+        <button class="tab" data-section="phonics">Phonics 偵探</button>
+        <button class="tab" data-section="sentences">句型拼圖</button>
+        <button class="tab" data-section="exam">期末 Boss 測驗</button>
+      </div>
+      <select class="unit-select" id="unitSelect" aria-label="選擇單元">
+        <option value="all">全部 Unit</option>
+        <option value="1">Unit 1 星期</option>
+        <option value="2">Unit 2 科目</option>
+        <option value="3">Unit 3 地點</option>
+        <option value="4">Unit 4 動物</option>
+      </select>
+    </nav>
+
+    <section class="section active" id="overview">
+      <div class="grid">
+        <article class="panel card span-8">
+          <h2>考前地圖</h2>
+          <div class="unit-grid" id="unitCards"></div>
+        </article>
+        <article class="panel card span-4">
+          <h2>家長檢查表</h2>
+          <div class="mastery" id="masteryList"></div>
+        </article>
+        <article class="panel card span-12">
+          <h2>必背清單</h2>
+          <div class="print-list" id="quickList"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="words">
+      <div class="grid">
+        <article class="panel card span-7">
+          <div class="row" style="justify-content: space-between;">
+            <h2>單字閃卡</h2>
+            <span class="badge" id="wordCounter">1 / 31</span>
+          </div>
+          <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="單字閃卡">
+            <div>
+              <div class="flash-emoji" id="flashEmoji">📅</div>
+              <div class="flash-word" id="flashWord">Sunday</div>
+              <div class="flash-hint" id="flashHint">點卡片看中文提示</div>
+            </div>
+          </div>
+          <div class="controls" style="margin-top: 12px;">
+            <button class="button" id="prevWord">上一張</button>
+            <button class="button primary" id="speakWord">聽發音</button>
+            <button class="button" id="nextWord">下一張</button>
+            <button class="button ghost" id="shuffleWords">打亂順序</button>
+          </div>
+        </article>
+        <article class="panel card span-5">
+          <h2>看提示拼單字</h2>
+          <p class="muted" id="spellPrompt">看到中文和圖案後，輸入英文。</p>
+          <div class="input-row">
+            <input id="spellInput" type="text" autocomplete="off" placeholder="輸入英文單字" />
+            <button class="button primary" id="checkSpell">檢查</button>
+          </div>
+          <div class="feedback" id="spellFeedback"></div>
+          <div class="controls">
+            <button class="button small" id="newSpell">換一題</button>
+            <button class="button small" id="showSpell">提示答案</button>
+          </div>
+        </article>
+        <article class="panel card span-12">
+          <h2>本單元單字牆</h2>
+          <div class="word-list" id="wordWall"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="phonics">
+      <div class="grid">
+        <article class="panel card span-7">
+          <div class="row" style="justify-content: space-between;">
+            <h2>Phonics 偵探：選出正確拼法</h2>
+            <span class="badge" id="phonicsStreak">連對 0 題</span>
+          </div>
+          <p class="muted">看單字、聽發音，判斷中間缺的是哪個 phonics pattern。</p>
+          <div class="sound-target" id="soundTarget"><span class="blank">ee</span></div>
+          <div class="choice-grid" id="phonicsChoices"></div>
+          <div class="feedback" id="phonicsFeedback"></div>
+          <div class="controls">
+            <button class="button primary" id="speakPhonics">聽這個字</button>
+            <button class="button" id="nextPhonics">下一題</button>
+          </div>
+        </article>
+        <article class="panel card span-5">
+          <h2>Phonics 地圖</h2>
+          <div class="pattern-grid" id="patternGrid"></div>
+          <p class="muted" style="margin-top: 12px;">目標：看到 e_e, i_e, o_e, u_e 要知道是「長母音」，看到 ee, ea, oa, ow, ue, ui, y 也要能連到正確聲音。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="sentences">
+      <div class="grid">
+        <article class="panel card span-7">
+          <h2>句型拼圖</h2>
+          <div class="sentence-prompt">
+            <strong id="sentenceZh">今天星期幾？</strong>
+            <p class="muted" id="sentenceHint">把下面的字排成正確英文句子。</p>
+          </div>
+          <div class="answer-bank" id="answerBank" aria-label="你的答案"></div>
+          <div class="word-bank" id="wordBank" aria-label="單字銀行"></div>
+          <div class="controls" style="margin-top: 12px;">
+            <button class="button primary" id="checkSentence">檢查句子</button>
+            <button class="button" id="clearSentence">重排</button>
+            <button class="button" id="nextSentence">下一題</button>
+          </div>
+          <div class="feedback" id="sentenceFeedback"></div>
+        </article>
+        <article class="panel card span-5">
+          <h2>句型必會問答</h2>
+          <div class="word-list" id="sentenceList"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="exam">
+      <div class="grid">
+        <article class="panel card span-8 exam-card">
+          <div class="row" style="justify-content: space-between;">
+            <h2>期末 Boss 測驗</h2>
+            <span class="badge" id="examProgress">尚未開始</span>
+          </div>
+          <div class="progress-shell" aria-label="測驗進度">
+            <div class="progress-fill" id="examFill"></div>
+          </div>
+          <div id="examArea" style="margin-top: 16px;">
+            <p class="muted">按「開始測驗」後會混合出題：單字中文選英文、英文選中文、phonics、句型。建議目標 85 分以上。</p>
+            <button class="button primary" id="startExam" style="margin-top: 14px;">開始 20 題挑戰</button>
+          </div>
+        </article>
+        <aside class="panel card span-4">
+          <h2>考試策略</h2>
+          <div class="mini-game">
+            <div class="sentence-card">
+              <strong>Phonics 先看母音</strong>
+              <p class="muted">kite / nine 是 i_e；boat / goat 是 oa；blue / glue 是 ue。</p>
+            </div>
+            <div class="sentence-card">
+              <strong>句型先找主詞</strong>
+              <p class="muted">Do you...? 回 Yes, I do. / No, I don't. Does he/she...? 回 does / doesn't。</p>
+            </div>
+            <div class="sentence-card">
+              <strong>There is / There are</strong>
+              <p class="muted">one lion 用 There is；nine lions 用 There are。</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const units = [
+      {
+        id: "1",
+        title: "Unit 1 星期",
+        focus: "days + e_e / ee / ea",
+        words: [
+          ["Sunday", "星期日", "☀️"], ["Monday", "星期一", "🌙"], ["Tuesday", "星期二", "🟨"],
+          ["Wednesday", "星期三", "🟪"], ["Thursday", "星期四", "🟥"], ["Friday", "星期五", "🟦"],
+          ["Saturday", "星期六", "🟧"]
+        ],
+        phonics: [
+          { pattern: "e_e", words: ["Pete", "these"] },
+          { pattern: "ee", words: ["bee", "tree"] },
+          { pattern: "ea", words: ["tea", "sea"] }
+        ],
+        sentences: [
+          { zh: "今天星期幾？", text: "What day is today?" },
+          { zh: "今天星期五。", text: "It's Friday." },
+          { zh: "今天是星期一嗎？", text: "Is it Monday today?" },
+          { zh: "是的。", text: "Yes, it is." },
+          { zh: "不是，是星期二。", text: "No, it isn't. It's Tuesday." }
+        ]
+      },
+      {
+        id: "2",
+        title: "Unit 2 科目",
+        focus: "subjects + i_e / ie / y",
+        words: [
+          ["art", "美術", "🎨"], ["Chinese", "國文", "📕"], ["English", "英文", "🔤"],
+          ["math", "數學", "➗"], ["music", "音樂", "🎵"], ["PE", "體育", "⚽"],
+          ["science", "自然", "🔬"], ["social studies", "社會", "🌏"]
+        ],
+        phonics: [
+          { pattern: "i_e", words: ["kite", "nine"] },
+          { pattern: "ie", words: ["tie", "pie"] },
+          { pattern: "y", words: ["fly", "sky"] }
+        ],
+        sentences: [
+          { zh: "你星期一有數學課嗎？", text: "Do you have math class on Monday?" },
+          { zh: "是的，我有。", text: "Yes, I do." },
+          { zh: "不，我沒有。", text: "No, I don't." },
+          { zh: "他／她星期四有英文課嗎？", text: "Does he have English class on Thursday?" },
+          { zh: "是的，他／她有。", text: "Yes, he does." },
+          { zh: "不，他／她沒有。", text: "No, he doesn't." }
+        ]
+      },
+      {
+        id: "3",
+        title: "Unit 3 地點",
+        focus: "places + o_e / oa / ow",
+        words: [
+          ["bank", "銀行", "🏦"], ["bookstore", "書店", "📚"], ["hospital", "醫院", "🏥"],
+          ["library", "圖書館", "📖"], ["museum", "博物館", "🏛️"], ["park", "公園", "🌳"],
+          ["post office", "郵局", "📮"], ["supermarket", "超市", "🛒"]
+        ],
+        phonics: [
+          { pattern: "o_e", words: ["note", "rose"] },
+          { pattern: "oa", words: ["boat", "goat"] },
+          { pattern: "ow", words: ["low", "row"] }
+        ],
+        sentences: [
+          { zh: "你要去哪裡？", text: "Where are you going?" },
+          { zh: "我要去圖書館。", text: "I'm going to the library." },
+          { zh: "我們要去超市。", text: "We're going to the supermarket." },
+          { zh: "公園在哪裡？", text: "Where's the park?" },
+          { zh: "它在 Blue Street。", text: "It's on Blue Street." }
+        ]
+      },
+      {
+        id: "4",
+        title: "Unit 4 動物",
+        focus: "animals + u_e / ue / ui",
+        words: [
+          ["elephant", "大象", "🐘"], ["horse", "馬", "🐴"], ["lion", "獅子", "🦁"],
+          ["monkey", "猴子", "🐒"], ["tiger", "老虎", "🐯"], ["turtle", "烏龜", "🐢"],
+          ["zebra", "斑馬", "🦓"], ["koala", "無尾熊", "🐨"]
+        ],
+        phonics: [
+          { pattern: "u_e", words: ["cute", "fuse", "Luke", "flute"] },
+          { pattern: "ue", words: ["blue", "glue"] },
+          { pattern: "ui", words: ["juice", "suit"] }
+        ],
+        sentences: [
+          { zh: "有幾隻獅子？", text: "How many lions are there?" },
+          { zh: "有一隻獅子。", text: "There's one lion." },
+          { zh: "有九隻獅子。", text: "There are nine lions." },
+          { zh: "他／她喜歡馬嗎？", text: "Does he like horses?" },
+          { zh: "是的，他／她喜歡。", text: "Yes, he does." },
+          { zh: "不，他／她不喜歡。他／她喜歡斑馬。", text: "No, he doesn't. He likes zebras." }
+        ]
+      }
+    ];
+
+    const state = {
+      section: "overview",
+      unit: "all",
+      wordIndex: 0,
+      wordDeck: [],
+      spellItem: null,
+      phonicsItem: null,
+      phonicsStreak: 0,
+      sentenceItem: null,
+      sentenceChosen: [],
+      exam: null,
+      progress: JSON.parse(localStorage.getItem("englishFinalProgress") || "{}")
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const flatWords = () => activeUnits().flatMap((unit) => unit.words.map(([word, zh, emoji]) => ({ unit, word, zh, emoji })));
+    const allWords = () => units.flatMap((unit) => unit.words.map(([word, zh, emoji]) => ({ unit, word, zh, emoji })));
+    const activeUnits = () => state.unit === "all" ? units : units.filter((unit) => unit.id === state.unit);
+    const allPhonics = () => activeUnits().flatMap((unit) => unit.phonics.flatMap((group) => group.words.map((word) => ({ unit, pattern: group.pattern, word }))));
+    const allSentences = () => activeUnits().flatMap((unit) => unit.sentences.map((sentence) => ({ unit, ...sentence })));
+    const normalize = (value) => value.trim().toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, " ");
+
+    function saveProgress(type, correct) {
+      const current = state.progress[type] || { correct: 0, total: 0 };
+      current.total += 1;
+      if (correct) current.correct += 1;
+      state.progress[type] = current;
+      localStorage.setItem("englishFinalProgress", JSON.stringify(state.progress));
+      renderProgress();
+    }
+
+    function percent(type) {
+      const current = state.progress[type];
+      if (!current || current.total === 0) return 0;
+      return Math.round((current.correct / current.total) * 100);
+    }
+
+    function overall() {
+      const keys = ["words", "phonics", "sentences", "exam"];
+      const values = keys.map(percent);
+      return Math.round(values.reduce((sum, value) => sum + value, 0) / keys.length);
+    }
+
+    function renderProgress() {
+      const score = overall();
+      $("overallPercent").textContent = `${score}%`;
+      $("overallFill").style.width = `${score}%`;
+      const level = score >= 90 ? "Level 5 Exam Hero" : score >= 75 ? "Level 4 Phonics Pro" : score >= 55 ? "Level 3 Sentence Solver" : score >= 30 ? "Level 2 Word Hunter" : "Level 1 Rookie Reader";
+      $("levelBadge").textContent = level;
+      $("masteryList").innerHTML = [
+        ["words", "單字"],
+        ["phonics", "Phonics"],
+        ["sentences", "句型"],
+        ["exam", "模考"]
+      ].map(([key, label]) => `
+        <div class="mastery-item">
+          <span>${label}</span>
+          <div class="progress-shell"><div class="progress-fill" style="width: ${percent(key)}%"></div></div>
+          <span>${percent(key)}%</span>
+        </div>
+      `).join("");
+    }
+
+    function speak(text) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = 0.82;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function shuffle(items) {
+      return [...items].sort(() => Math.random() - 0.5);
+    }
+
+    function setSection(section) {
+      state.section = section;
+      document.querySelectorAll(".section").forEach((node) => node.classList.toggle("active", node.id === section));
+      document.querySelectorAll(".tab").forEach((node) => node.classList.toggle("active", node.dataset.section === section));
+      if (section === "words") setupWords();
+      if (section === "phonics") newPhonics();
+      if (section === "sentences") newSentence();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderOverview() {
+      $("unitCards").innerHTML = units.map((unit) => `
+        <button class="choice unit-card" data-unit="${unit.id}">
+          <span class="badge strong">${unit.title}</span>
+          <h3>${unit.focus}</h3>
+          <p class="muted">${unit.words.map((word) => word[0]).join(" · ")}</p>
+        </button>
+      `).join("");
+      document.querySelectorAll(".unit-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          $("unitSelect").value = card.dataset.unit;
+          state.unit = card.dataset.unit;
+          setupAll();
+          setSection("words");
+        });
+      });
+      $("quickList").innerHTML = units.map((unit) => `
+        <div class="sentence-card">
+          <span class="badge">${unit.title}</span>
+          <p class="muted">${unit.words.map((word) => word[0]).join(", ")}</p>
+        </div>
+      `).join("");
+    }
+
+    function setupWords() {
+      state.wordDeck = flatWords();
+      if (state.wordIndex >= state.wordDeck.length) state.wordIndex = 0;
+      renderFlashcard(false);
+      newSpell();
+      renderWordWall();
+    }
+
+    function renderFlashcard(showMeaning) {
+      const deck = state.wordDeck.length ? state.wordDeck : flatWords();
+      const item = deck[state.wordIndex] || deck[0];
+      if (!item) return;
+      $("flashEmoji").textContent = item.emoji;
+      $("flashWord").textContent = item.word;
+      $("flashHint").textContent = showMeaning ? `${item.zh} · ${item.unit.title}` : "點卡片看中文提示";
+      $("wordCounter").textContent = `${state.wordIndex + 1} / ${deck.length}`;
+    }
+
+    function renderWordWall() {
+      $("wordWall").innerHTML = flatWords().map((item) => `
+        <div class="word-card">
+          <span class="emoji">${item.emoji}</span>
+          <span><span class="word">${item.word}</span><br><span class="zh">${item.zh} · ${item.unit.title}</span></span>
+          <button class="button small speak-item" data-word="${item.word}">聽</button>
+        </div>
+      `).join("");
+      document.querySelectorAll(".speak-item").forEach((button) => button.addEventListener("click", () => speak(button.dataset.word)));
+    }
+
+    function newSpell() {
+      const deck = flatWords();
+      state.spellItem = deck[Math.floor(Math.random() * deck.length)];
+      $("spellPrompt").textContent = `${state.spellItem.emoji} ${state.spellItem.zh}（${state.spellItem.unit.title}）`;
+      $("spellInput").value = "";
+      $("spellFeedback").textContent = "";
+      $("spellFeedback").className = "feedback";
+      $("spellInput").focus();
+    }
+
+    function checkSpell() {
+      const answer = normalize($("spellInput").value);
+      const correct = normalize(state.spellItem.word);
+      const ok = answer === correct;
+      $("spellFeedback").textContent = ok ? `答對！${state.spellItem.word}` : `再想一下：開頭是 ${state.spellItem.word.slice(0, 1).toUpperCase()}`;
+      $("spellFeedback").className = `feedback ${ok ? "good" : "bad"}`;
+      saveProgress("words", ok);
+      if (ok) {
+        speak(state.spellItem.word);
+        setTimeout(newSpell, 850);
+      }
+    }
+
+    function newPhonics() {
+      const items = allPhonics();
+      state.phonicsItem = items[Math.floor(Math.random() * items.length)];
+      const item = state.phonicsItem;
+      const display = item.word.replace(new RegExp(item.pattern.replace("_", ".?"), "i"), "___");
+      $("soundTarget").innerHTML = `${display} <span class="blank">?</span>`;
+      const patterns = [...new Set(units.flatMap((unit) => unit.phonics.map((group) => group.pattern)))];
+      const choices = shuffle([item.pattern, ...shuffle(patterns.filter((pattern) => pattern !== item.pattern)).slice(0, 3)]);
+      $("phonicsChoices").innerHTML = choices.map((pattern) => `<button class="choice phonics-choice" data-pattern="${pattern}">${pattern}</button>`).join("");
+      $("phonicsFeedback").textContent = "";
+      $("phonicsFeedback").className = "feedback";
+      $("phonicsStreak").textContent = `連對 ${state.phonicsStreak} 題`;
+      renderPatternGrid(item.pattern);
+      document.querySelectorAll(".phonics-choice").forEach((button) => {
+        button.addEventListener("click", () => choosePhonics(button));
+      });
+    }
+
+    function choosePhonics(button) {
+      const ok = button.dataset.pattern === state.phonicsItem.pattern;
+      document.querySelectorAll(".phonics-choice").forEach((node) => {
+        node.disabled = true;
+        if (node.dataset.pattern === state.phonicsItem.pattern) node.classList.add("correct");
+      });
+      if (!ok) button.classList.add("wrong");
+      state.phonicsStreak = ok ? state.phonicsStreak + 1 : 0;
+      $("phonicsStreak").textContent = `連對 ${state.phonicsStreak} 題`;
+      $("phonicsFeedback").textContent = ok ? `正確！${state.phonicsItem.word} 是 ${state.phonicsItem.pattern}` : `答案是 ${state.phonicsItem.pattern}：${state.phonicsItem.word}`;
+      $("phonicsFeedback").className = `feedback ${ok ? "good" : "bad"}`;
+      saveProgress("phonics", ok);
+      speak(state.phonicsItem.word);
+    }
+
+    function renderPatternGrid(activePattern) {
+      const patterns = units.flatMap((unit) => unit.phonics.map((group) => ({ unit, ...group })));
+      $("patternGrid").innerHTML = patterns.map((group) => `
+        <div class="pattern-card ${group.pattern === activePattern ? "active" : ""}">
+          ${group.pattern}
+          <div class="zh">${group.words.join(" · ")}</div>
+        </div>
+      `).join("");
+    }
+
+    function newSentence() {
+      const sentences = allSentences();
+      state.sentenceItem = sentences[Math.floor(Math.random() * sentences.length)];
+      state.sentenceChosen = [];
+      $("sentenceZh").textContent = state.sentenceItem.zh;
+      $("sentenceHint").textContent = `${state.sentenceItem.unit.title}：把單字點到上方，排成完整句子。`;
+      const tokens = state.sentenceItem.text.match(/[A-Za-z']+|[?.!,]/g);
+      $("wordBank").innerHTML = shuffle(tokens).map((token, index) => `<button class="token sentence-token" data-token="${token}" data-index="${index}">${token}</button>`).join("");
+      $("answerBank").innerHTML = "";
+      $("sentenceFeedback").textContent = "";
+      $("sentenceFeedback").className = "feedback";
+      document.querySelectorAll(".sentence-token").forEach((button) => {
+        button.addEventListener("click", () => moveToken(button));
+      });
+      renderSentenceList();
+    }
+
+    function moveToken(button) {
+      state.sentenceChosen.push({ token: button.dataset.token, index: button.dataset.index });
+      button.remove();
+      renderAnswerBank();
+    }
+
+    function renderAnswerBank() {
+      $("answerBank").innerHTML = state.sentenceChosen.map((item, position) => `
+        <button class="token answer-token" data-position="${position}">${item.token}</button>
+      `).join("");
+      document.querySelectorAll(".answer-token").forEach((button) => {
+        button.addEventListener("click", () => {
+          const [removed] = state.sentenceChosen.splice(Number(button.dataset.position), 1);
+          const restored = document.createElement("button");
+          restored.className = "token sentence-token";
+          restored.dataset.token = removed.token;
+          restored.dataset.index = removed.index;
+          restored.textContent = removed.token;
+          restored.addEventListener("click", () => moveToken(restored));
+          $("wordBank").appendChild(restored);
+          renderAnswerBank();
+        });
+      });
+    }
+
+    function sentenceFromTokens(tokens) {
+      return tokens.map((item) => item.token).join(" ")
+        .replace(/\s+([?.!,])/g, "$1")
+        .replace(/^([a-z])/, (match) => match.toUpperCase());
+    }
+
+    function checkSentence() {
+      const answer = sentenceFromTokens(state.sentenceChosen);
+      const ok = normalize(answer) === normalize(state.sentenceItem.text);
+      $("sentenceFeedback").textContent = ok ? `太棒了：${state.sentenceItem.text}` : `再排一次。正確句子是：${state.sentenceItem.text}`;
+      $("sentenceFeedback").className = `feedback ${ok ? "good" : "bad"}`;
+      saveProgress("sentences", ok);
+      if (ok) {
+        speak(state.sentenceItem.text);
+        celebrate();
+      }
+    }
+
+    function renderSentenceList() {
+      $("sentenceList").innerHTML = allSentences().map((item) => `
+        <div class="sentence-card">
+          <strong>${item.text}</strong>
+          <p class="muted">${item.zh}</p>
+        </div>
+      `).join("");
+    }
+
+    function buildExamQuestions() {
+      const wordQuestions = shuffle(allWords()).slice(0, 8).map((item) => ({
+        type: "word",
+        prompt: `${item.emoji}「${item.zh}」的英文是？`,
+        answer: item.word,
+        choices: shuffle([item.word, ...shuffle(allWords().filter((word) => word.word !== item.word)).slice(0, 3).map((word) => word.word)])
+      }));
+      const meaningQuestions = shuffle(allWords()).slice(0, 4).map((item) => ({
+        type: "word",
+        prompt: `${item.word} 是什麼意思？`,
+        answer: item.zh,
+        choices: shuffle([item.zh, ...shuffle(allWords().filter((word) => word.zh !== item.zh)).slice(0, 3).map((word) => word.zh)])
+      }));
+      const phonicsQuestions = shuffle(units.flatMap((unit) => unit.phonics.flatMap((group) => group.words.map((word) => ({ unit, pattern: group.pattern, word }))))).slice(0, 4).map((item) => {
+        const patterns = [...new Set(units.flatMap((unit) => unit.phonics.map((group) => group.pattern)))];
+        return {
+          type: "phonics",
+          prompt: `${item.word} 的 phonics pattern 是？`,
+          answer: item.pattern,
+          choices: shuffle([item.pattern, ...shuffle(patterns.filter((pattern) => pattern !== item.pattern)).slice(0, 3)])
+        };
+      });
+      const sentenceQuestions = shuffle(units.flatMap((unit) => unit.sentences.map((sentence) => ({ unit, ...sentence })))).slice(0, 4).map((item) => ({
+        type: "sentence",
+        prompt: `${item.zh} 的英文是？`,
+        answer: item.text,
+        choices: shuffle([item.text, ...shuffle(units.flatMap((unit) => unit.sentences.map((sentence) => sentence.text)).filter((text) => text !== item.text)).slice(0, 3)])
+      }));
+      return shuffle([...wordQuestions, ...meaningQuestions, ...phonicsQuestions, ...sentenceQuestions]).slice(0, 20);
+    }
+
+    function startExam() {
+      state.exam = { questions: buildExamQuestions(), index: 0, correct: 0, locked: false };
+      renderExamQuestion();
+    }
+
+    function renderExamQuestion() {
+      const exam = state.exam;
+      const question = exam.questions[exam.index];
+      $("examProgress").textContent = `${exam.index + 1} / ${exam.questions.length}`;
+      $("examFill").style.width = `${(exam.index / exam.questions.length) * 100}%`;
+      $("examArea").innerHTML = `
+        <h3>${question.prompt}</h3>
+        <div class="choice-grid">
+          ${question.choices.map((choice) => `<button class="choice exam-choice" data-choice="${choice.replace(/"/g, "&quot;")}">${choice}</button>`).join("")}
+        </div>
+        <div class="feedback" id="examFeedback"></div>
+        <div class="controls" style="margin-top: 12px;">
+          <button class="button" id="speakExam">聽題目或答案</button>
+        </div>
+      `;
+      document.querySelectorAll(".exam-choice").forEach((button) => button.addEventListener("click", () => chooseExam(button)));
+      $("speakExam").addEventListener("click", () => speak(question.answer));
+    }
+
+    function chooseExam(button) {
+      if (state.exam.locked) return;
+      state.exam.locked = true;
+      const question = state.exam.questions[state.exam.index];
+      const ok = normalize(button.dataset.choice) === normalize(question.answer);
+      if (ok) state.exam.correct += 1;
+      document.querySelectorAll(".exam-choice").forEach((node) => {
+        node.disabled = true;
+        if (normalize(node.dataset.choice) === normalize(question.answer)) node.classList.add("correct");
+      });
+      if (!ok) button.classList.add("wrong");
+      $("examFeedback").textContent = ok ? "答對！" : `答案：${question.answer}`;
+      $("examFeedback").className = `feedback ${ok ? "good" : "bad"}`;
+      setTimeout(() => {
+        state.exam.index += 1;
+        state.exam.locked = false;
+        if (state.exam.index >= state.exam.questions.length) {
+          finishExam();
+        } else {
+          renderExamQuestion();
+        }
+      }, 900);
+    }
+
+    function finishExam() {
+      const score = Math.round((state.exam.correct / state.exam.questions.length) * 100);
+      saveProgress("exam", score >= 85);
+      $("examProgress").textContent = "完成";
+      $("examFill").style.width = "100%";
+      $("examArea").innerHTML = `
+        <div class="final-result">
+          <span class="badge strong">${score >= 85 ? "通過期末 Boss" : "再練一次會更穩"}</span>
+          <span class="final-score">${score}</span>
+          <p class="muted">答對 ${state.exam.correct} / ${state.exam.questions.length} 題。${score >= 85 ? "可以進入考前複習模式：每天再玩一次。" : "建議回到 Phonics 偵探和句型拼圖補強。"}</p>
+          <button class="button primary" id="restartExam" style="margin-top: 14px;">再挑戰一次</button>
+        </div>
+      `;
+      $("restartExam").addEventListener("click", startExam);
+      if (score >= 85) celebrate();
+    }
+
+    function celebrate() {
+      const host = $("confetti");
+      host.innerHTML = "";
+      for (let i = 0; i < 26; i += 1) {
+        const piece = document.createElement("span");
+        piece.textContent = ["★", "✓", "A+", "Wow"][i % 4];
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.animationDelay = `${Math.random() * 240}ms`;
+        host.appendChild(piece);
+      }
+      setTimeout(() => { host.innerHTML = ""; }, 1600);
+    }
+
+    function setupAll() {
+      renderOverview();
+      renderProgress();
+      setupWords();
+      renderPatternGrid("");
+      renderSentenceList();
+    }
+
+    document.querySelectorAll(".tab").forEach((button) => button.addEventListener("click", () => setSection(button.dataset.section)));
+    document.querySelectorAll("[data-jump]").forEach((button) => button.addEventListener("click", () => setSection(button.dataset.jump)));
+    $("unitSelect").addEventListener("change", (event) => {
+      state.unit = event.target.value;
+      state.wordIndex = 0;
+      setupAll();
+      if (state.section === "phonics") newPhonics();
+      if (state.section === "sentences") newSentence();
+    });
+    $("flashcard").addEventListener("click", () => renderFlashcard(true));
+    $("flashcard").addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") renderFlashcard(true);
+    });
+    $("prevWord").addEventListener("click", () => {
+      state.wordIndex = (state.wordIndex - 1 + state.wordDeck.length) % state.wordDeck.length;
+      renderFlashcard(false);
+    });
+    $("nextWord").addEventListener("click", () => {
+      state.wordIndex = (state.wordIndex + 1) % state.wordDeck.length;
+      renderFlashcard(false);
+    });
+    $("shuffleWords").addEventListener("click", () => {
+      state.wordDeck = shuffle(state.wordDeck);
+      state.wordIndex = 0;
+      renderFlashcard(false);
+    });
+    $("speakWord").addEventListener("click", () => speak((state.wordDeck[state.wordIndex] || {}).word || ""));
+    $("checkSpell").addEventListener("click", checkSpell);
+    $("spellInput").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") checkSpell();
+    });
+    $("newSpell").addEventListener("click", newSpell);
+    $("showSpell").addEventListener("click", () => {
+      $("spellFeedback").textContent = `答案：${state.spellItem.word}`;
+      $("spellFeedback").className = "feedback good";
+      speak(state.spellItem.word);
+    });
+    $("nextPhonics").addEventListener("click", newPhonics);
+    $("speakPhonics").addEventListener("click", () => speak(state.phonicsItem.word));
+    $("checkSentence").addEventListener("click", checkSentence);
+    $("clearSentence").addEventListener("click", newSentence);
+    $("nextSentence").addEventListener("click", newSentence);
+    $("startExam").addEventListener("click", startExam);
+    $("resetProgress").addEventListener("click", () => {
+      state.progress = {};
+      localStorage.removeItem("englishFinalProgress");
+      renderProgress();
+    });
+
+    setupAll();
+  </script>
+</body>
+</html>
