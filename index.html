@@ -719,10 +719,10 @@
       <div class="hero-main card">
         <div class="eyebrow">Final Exam Mission</div>
         <h1>英文期末考互動複習</h1>
-        <p class="muted">Unit 1-4：星期、科目、地點、動物。題型改成像一般考卷：看圖選字、句子填空、句子重組、phonics 找相同發音。</p>
+        <p class="muted">Unit 1-4：孩子已經懂意思，所以這裡練的是考場輸出：看圖能說／拼、句子會填空與重組、phonics 能找相同發音。</p>
         <div class="hero-actions">
           <button class="button primary" data-jump="exam">開始期末 Boss 測驗</button>
-          <button class="button" data-jump="words">先背單字</button>
+          <button class="button" data-jump="words">看圖拼字</button>
           <button class="button" data-jump="phonics">練 Phonics</button>
         </div>
         <div class="stats">
@@ -747,7 +747,7 @@
         <h2>今日任務</h2>
         <div class="mini-game">
           <span class="badge strong" id="levelBadge">Level 1 Rookie Reader</span>
-          <p class="muted">建議順序：單字 10 分鐘 → phonics 10 分鐘 → 句型 10 分鐘 → Boss 測驗。</p>
+          <p class="muted">建議順序：看圖拼字 10 分鐘 → phonics 10 分鐘 → 句型 10 分鐘 → Boss 測驗。</p>
           <div>
             <div class="row" style="justify-content: space-between;">
               <strong>總熟練度</strong>
@@ -765,7 +765,7 @@
     <nav class="nav">
       <div class="tabs" role="tablist" aria-label="複習類型">
         <button class="tab active" data-section="overview">總覽</button>
-        <button class="tab" data-section="words">單字遊戲</button>
+        <button class="tab" data-section="words">看圖拼字</button>
         <button class="tab" data-section="phonics">Phonics 偵探</button>
         <button class="tab" data-section="sentences">句型拼圖</button>
         <button class="tab" data-section="exam">期末 Boss 測驗</button>
@@ -800,14 +800,14 @@
       <div class="grid">
         <article class="panel card span-7">
           <div class="row" style="justify-content: space-between;">
-            <h2>單字閃卡</h2>
+            <h2>看圖回想挑戰</h2>
             <span class="badge" id="wordCounter">1 / 31</span>
           </div>
-          <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="單字閃卡">
+          <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="看圖回想挑戰">
             <div>
               <div class="flash-emoji" id="flashEmoji">📅</div>
-              <div class="flash-word" id="flashWord">Sunday</div>
-              <div class="flash-hint" id="flashHint">點卡片看中文提示</div>
+              <div class="flash-word" id="flashWord">?</div>
+              <div class="flash-hint" id="flashHint">先不要看答案：說英文 → 拼出來 → 點卡片檢查</div>
             </div>
           </div>
           <div class="controls" style="margin-top: 12px;">
@@ -821,7 +821,7 @@
           <h2>看圖片拼單字</h2>
           <p class="muted" id="spellPrompt">只看圖片，輸入正確英文單字。</p>
           <div class="input-row">
-            <input id="spellInput" type="text" autocomplete="off" placeholder="輸入英文單字" />
+            <input id="spellInput" type="text" autocomplete="off" placeholder="type the word" />
             <button class="button primary" id="checkSpell">檢查</button>
           </div>
           <div class="feedback" id="spellFeedback"></div>
@@ -831,7 +831,7 @@
           </div>
         </article>
         <article class="panel card span-12">
-          <h2>本單元單字牆</h2>
+          <h2>考前速讀單字牆</h2>
           <div class="word-list" id="wordWall"></div>
         </article>
       </div>
@@ -1141,8 +1141,10 @@
       const item = deck[state.wordIndex] || deck[0];
       if (!item) return;
       $("flashEmoji").textContent = item.emoji;
-      $("flashWord").textContent = item.word;
-      $("flashHint").textContent = showMeaning ? `${item.zh} · ${item.unit.title}` : "點卡片看中文提示";
+      $("flashWord").textContent = showMeaning ? item.word : "?";
+      $("flashHint").textContent = showMeaning
+        ? `Check spelling · say one sentence · ${item.unit.title}`
+        : "Look only at the picture: say it, spell it, then tap to check";
       $("wordCounter").textContent = `${state.wordIndex + 1} / ${deck.length}`;
     }
 
@@ -1150,7 +1152,7 @@
       $("wordWall").innerHTML = flatWords().map((item) => `
         <div class="word-card">
           <span class="emoji">${item.emoji}</span>
-          <span><span class="word">${item.word}</span><br><span class="zh">${item.zh} · ${item.unit.title}</span></span>
+          <span><span class="word">${item.word}</span><br><span class="zh">${item.unit.title} · read fast, spell fast</span></span>
           <button class="button small speak-item" data-word="${item.word}">聽</button>
         </div>
       `).join("");
